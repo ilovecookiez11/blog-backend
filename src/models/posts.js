@@ -9,11 +9,10 @@ class Post {
             author,
             content
         });
-        console.log("query result:", result)
-        return result[0]; // Return the newly created post ID
+        return result;
         } catch (error) {
         console.error('Error creating post:', error);
-        throw error; // Re-throw the error for proper handling in controller
+        throw error;
         }
     }
 
@@ -25,9 +24,38 @@ class Post {
             console.error('Error fetching posts:', error);
             throw error; // Re-throw the error for proper handling in the route handler
         }
-        }
+    }
 
-  // Add other methods for retrieving, updating, or deleting posts as needed
+    static async getPostById(id) {
+        try {
+            const posts = await knex('posts').where('id', id);
+            return posts;
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            throw error; // Re-throw the error for proper handling in the route handler
+        }
+    }
+
+    static async search(queryParams) {
+        try {
+            const posts = await knex('posts').where((qb) => {
+                if (queryParams.author) {
+                    qb.where('posts.author', '=', queryParams.author);
+                }
+                if (queryParams.content) {
+                    qb.where('posts.content', 'like', queryParams.content);
+                }
+                if (queryParams.title) {
+                    qb.where(knex.raw('LOWER(title)'), 'like', queryParams.title.toLowerCase())
+                }
+            });
+            return posts;
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            throw error; 
+        }
+    }
+
 }
 
 module.exports = Post;

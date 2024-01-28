@@ -1,14 +1,15 @@
 const express = require('express');
-const newPostRouter = require('./routes/newPost');
-const getAllPosts = require('./routes/posts')
+const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts')
+const searchRouter = require('./routes/search')
 
 const app = express();
 
 app.use(express.json());
 
-
-app.use('/api/post', newPostRouter);
-app.use('/api/posts', getAllPosts);
+app.use('/api/post', postRouter);
+app.use('/api/posts', postsRouter);
+app.use('/api/search', searchRouter);
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
