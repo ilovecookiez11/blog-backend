@@ -1,4 +1,4 @@
-const knexConfig = require('../config/knexfile');
+const knexConfig = require('../../knexfile')
 const knex = require('knex')(knexConfig.development);
 
 class Post {
