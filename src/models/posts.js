@@ -18,11 +18,11 @@ class Post {
 
     static async getAllPosts() {
         try {
-            const posts = await knex('posts').select();
+            const posts = await knex('posts').select(knex.raw('author, title, id, post_date, LEFT(content, 70) AS content'));
             return posts;
         } catch (error) {
             console.error('Error fetching posts:', error);
-            throw error; // Re-throw the error for proper handling in the route handler
+            throw error;
         }
     }
 
@@ -32,7 +32,7 @@ class Post {
             return posts;
         } catch (error) {
             console.error('Error fetching posts:', error);
-            throw error; // Re-throw the error for proper handling in the route handler
+            throw error;
         }
     }
 
